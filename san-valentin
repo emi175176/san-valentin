@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para Estrella</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg, #ff4e8a, #ff9ac2);
+    font-family: Arial, sans-serif;
+    overflow:hidden;
+}
+
+/* Corazones flotando */
+.heart-bg{
+    position:absolute;
+    color: rgba(255,255,255,0.3);
+    animation: flotar 6s linear infinite;
+}
+
+@keyframes flotar{
+    0%{ transform: translateY(100vh); }
+    100%{ transform: translateY(-10vh); }
+}
+
+/* Corazón principal */
+.heart{
+    position: relative;
+    width: 150px;
+    height: 150px;
+    background: red;
+    transform: rotate(-45deg);
+    animation: latido 1s infinite;
+}
+
+.heart:before,
+.heart:after{
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: red;
+    border-radius: 50%;
+}
+
+.heart:before{
+    top: -75px;
+    left: 0;
+}
+
+.heart:after{
+    left: 75px;
+    top: 0;
+}
+
+@keyframes latido{
+    0%{ transform: rotate(-45deg) scale(1); }
+    50%{ transform: rotate(-45deg) scale(1.1); }
+    100%{ transform: rotate(-45deg) scale(1); }
+}
+
+/* Texto */
+.mensaje{
+    position:absolute;
+    text-align:center;
+    color:white;
+    font-size:2rem;
+    font-weight:bold;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    top:15%;
+}
+
+/* Botones */
+.botones{
+    position:absolute;
+    top:75%;
+}
+
+button{
+    padding:10px 20px;
+    font-size:1.2rem;
+    margin:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.si{
+    background:#00c853;
+    color:white;
+}
+
+.no{
+    background:#d50000;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="mensaje">
+Estrella ✨<br>
+¿Quieres ser mi San Valentín? ❤️
+</div>
+
+<div class="heart"></div>
+
+<div class="botones">
+    <button class="si" onclick="acepto()">Sí</button>
+    <button class="no" onclick="moverNo()">No</button>
+</div>
+
+<script>
+// Botón sí
+function acepto(){
+    alert("Sabía que dirías que sí, Estrella ❤️✨");
+}
+
+// Botón no que se mueve
+function moverNo(){
+    const boton = document.querySelector(".no");
+    boton.style.position = "absolute";
+    boton.style.left = Math.random()*80 + "%";
+    boton.style.top = Math.random()*80 + "%";
+}
+
+// Corazones flotando
+setInterval(()=>{
+    const heart = document.createElement("div");
+    heart.classList.add("heart-bg");
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = (Math.random()*20 + 10) + "px";
+    heart.style.animationDuration = (Math.random()*3 + 3) + "s";
+    document.body.appendChild(heart);
+
+    setTimeout(()=> heart.remove(),6000);
+},300);
+</script>
+
+</body>
+</html>
