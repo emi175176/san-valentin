@@ -12,7 +12,7 @@ body{
     background: linear-gradient(black, #0d001a);
     color:white;
     text-align:center;
-    overflow:hidden;
+    overflow-x:hidden;
 }
 
 /* Fondo estrellas */
@@ -28,7 +28,7 @@ body::before{
 
 /* Sobre */
 .sobre{
-    width:300px;
+    width:320px;
     height:200px;
     background:#ff4e8a;
     margin:120px auto;
@@ -36,6 +36,7 @@ body::before{
     position:relative;
     cursor:pointer;
     box-shadow:0 0 30px #ff4e8a;
+    transition:1s;
 }
 
 .sobre::before{
@@ -45,6 +46,12 @@ body::before{
     height:100%;
     background:#ff6fa1;
     clip-path: polygon(0 0, 100% 0, 50% 60%);
+    transition:1s;
+}
+
+.sobre.abierto::before{
+    transform:rotateX(180deg);
+    transform-origin:top;
 }
 
 .sobre span{
@@ -57,29 +64,36 @@ body::before{
 /* Carta */
 .carta{
     display:none;
-    max-width:600px;
-    margin:30px auto;
-    padding:25px;
+    max-width:700px;
+    margin:40px auto;
+    padding:30px;
     background:rgba(255,255,255,0.05);
     border-radius:20px;
-    box-shadow:0 0 20px rgba(255,78,138,0.5);
+    box-shadow:0 0 20px rgba(255,78,138,0.6);
+    line-height:1.7;
+    font-size:18px;
+    animation:aparecer 2s;
+}
+
+@keyframes aparecer{
+    from{opacity:0; transform:translateY(40px);}
+    to{opacity:1;}
 }
 
 /* Fotos */
-.galeria{
-    display:none;
-    justify-content:center;
-    gap:20px;
-    flex-wrap:wrap;
-}
-
-.galeria img{
-    width:200px;
+.foto{
+    width:250px;
     border-radius:20px;
+    margin:20px 0;
     box-shadow:0 0 20px #ff4e8a;
 }
 
-/* Botones */
+/* Pregunta */
+#pregunta{
+    display:none;
+    margin-top:40px;
+}
+
 button{
     padding:12px 25px;
     font-size:18px;
@@ -96,7 +110,7 @@ button{
     position:absolute;
 }
 
-/* Mensaje final */
+/* Final */
 #final{
     display:none;
     font-size:40px;
@@ -130,71 +144,86 @@ button{
 <source src="scanlines.mp3">
 </audio>
 
-<div class="sobre" onclick="abrir()">
+<div class="sobre" id="sobre" onclick="abrirSobre()">
 <span>Haz clic para abrir 💌</span>
 </div>
 
 <div class="carta" id="carta">
-Estrella…  
-Desde que llegaste a mi vida, algo cambió.  
-No busco algo perfecto, solo algo real contigo 💖
-</div>
 
-<div class="galeria" id="fotos">
-<img src="foto1.jpg">
-<img src="foto2.jpg">
-</div>
+<p><strong>Estrella,</strong></p>
 
-<div id="pregunta" style="display:none;">
+<p>Desde que llegaste a mi vida, algo en mí cambió sin que me diera cuenta.  
+Fue como una luz que se encendió en un cuarto oscuro. Así llegaste tú… iluminando partes de mí que ni yo conocía.</p>
+
+<p>A veces me pregunto cómo alguien puede significar tanto.  
+Cómo una persona puede volverse calma, refugio y al mismo tiempo emoción.</p>
+
+<img src="foto1.jpg" class="foto">
+
+<p>Si pudiera escribir todo lo que siento por ti, no me alcanzarían las estrellas.  
+Porque lo que me haces sentir no se explica, se siente en el corazón.</p>
+
+<p>Me gusta pensar en ti, en tu risa, en tu forma de ser,  
+en todo lo que te hace única.</p>
+
+<img src="foto2.jpg" class="foto">
+
+<p>No te prometo un amor perfecto,  
+pero sí uno real, que se quede incluso cuando haya miedo.  
+Uno que te elija todos los días.</p>
+
+<p>Quiero una historia contigo…  
+y ahora solo me queda preguntarte algo desde lo más profundo de mi corazón.</p>
+
+<div id="pregunta">
 <h1>¿Quieres ser mi San Valentín? ❤️</h1>
 <button id="siBtn" onclick="aceptar()">Sí</button>
 <button id="noBtn" onmouseover="huir()">No</button>
 </div>
 
+</div>
+
 <div id="final">
 TE AMO 💖<br>
-Gracias por elegirnos ✨
+Gracias por elegirme ✨
 </div>
 
 <script>
 let noScale=1, siScale=1;
 
-function abrir(){
-    document.querySelector(".sobre").style.display="none";
-    document.getElementById("carta").style.display="block";
-    document.getElementById("fotos").style.display="flex";
+function abrirSobre(){
+    document.getElementById("sobre").classList.add("abierto");
     setTimeout(()=>{
+        document.getElementById("sobre").style.display="none";
+        document.getElementById("carta").style.display="block";
         document.getElementById("pregunta").style.display="block";
-    },2000);
+    },1000);
 }
 
 function huir(){
-    const no = document.getElementById("noBtn");
-    noScale -= 0.1;
-    siScale += 0.1;
-
-    no.style.transform=scale(${noScale});
-    document.getElementById("siBtn").style.transform=scale(${siScale});
-
-    no.style.left = Math.random()*80 + "vw";
-    no.style.top = Math.random()*80 + "vh";
+    const no=document.getElementById("noBtn");
+    noScale-=0.1;
+    siScale+=0.1;
+    no.style.transform="scale("+noScale+")";
+    document.getElementById("siBtn").style.transform="scale("+siScale+")";
+    no.style.left=Math.random()*80+"vw";
+    no.style.top=Math.random()*80+"vh";
 }
 
 function aceptar(){
-    document.getElementById("pregunta").style.display="none";
+    document.getElementById("carta").style.display="none";
     document.getElementById("final").style.display="block";
 }
 
-/* corazones */
 setInterval(()=>{
- let c=document.createElement("div");
- c.classList.add("corazon");
- c.innerHTML="❤";
- c.style.left=Math.random()*100+"vw";
- c.style.fontSize=Math.random()*20+10+"px";
- c.style.animationDuration=Math.random()*3+3+"s";
- document.body.appendChild(c);
- setTimeout(()=>c.remove(),6000);
+    let c=document.createElement("div");
+    c.classList.add("corazon");
+    c.innerHTML="❤";
+    c.style.left=Math.random()*100+"vw";
+    c.style.fontSize=Math.random()*20+10+"px";
+    c.style.animationDuration=Math.random()*3+3+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),6000);
 },300);
 </script>
 
